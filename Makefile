@@ -14,6 +14,12 @@ deploy-airflow:
 	kubectl create namespace airflow
 	helm install airflow apache-airflow/airflow --namespace airflow
 
+show-values-airflow:
+	helm show values apache-airflow/airflow > show_values_airflow.yaml
+
+get-values-airflow:
+	helm get values airflow -n airflow > actual_values_airflow.yaml
+
 run-airflow:
 	kubectl port-forward svc/airflow-webserver 8000:8080 -n airflow
 
@@ -22,3 +28,14 @@ upgrade-airflow:
 
 secret-github:
 	kubectl create secret generic airflow-ssh-git-secret --from-file=gitSshKey=/home/crist/.ssh/airflow -n airflow
+
+deploy-spark:
+	kubectl create namespace spark
+	helm install spark bitnami/spark --namespace spark
+
+show-values-spark:
+	helm show values bitnami/spark > show_values_spark.yaml
+
+get-values-spark:
+	helm get values spark -n spark > actual_values_spark.yaml
+
