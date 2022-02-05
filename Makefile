@@ -14,8 +14,11 @@ deploy-airflow:
 	kubectl create namespace airflow
 	helm install airflow apache-airflow/airflow --namespace airflow
 
-airflow:
+run-airflow:
 	kubectl port-forward svc/airflow-webserver 8000:8080 -n airflow
 
 upgrade-airflow:
 	helm upgrade --install airflow apache-airflow/airflow -n airflow -f values.yaml --debug
+
+secret-github:
+	kubectl create secret generic airflow-ssh-git-secret --from-file=gitSshKey=/home/crist/.ssh/airflow -n airflow
