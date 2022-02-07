@@ -21,7 +21,7 @@ argo-secret:
 
 deploy-airflow:
 	kubectl create namespace airflow
-	helm install airflow apache-airflow/airflow --values values.yaml --namespace airflow --debug
+	helm install airflow apache-airflow/airflow --values airflow/values.yaml --namespace airflow --debug
 
 show-values-airflow:
 	helm show values apache-airflow/airflow > show_values_airflow.yaml
@@ -33,7 +33,7 @@ run-airflow:
 	kubectl port-forward svc/airflow-webserver 8000:8080 -n airflow
 
 upgrade-airflow:
-	helm upgrade --install airflow apache-airflow/airflow -n airflow -f values.yaml --debug
+	helm upgrade --install airflow apache-airflow/airflow -n airflow -f airflow/values.yaml --debug
 
 secret-github:
 	kubectl create secret generic airflow-ssh-git-secret --from-file=gitSshKey=/home/crist/.ssh/airflow -n airflow
@@ -48,3 +48,9 @@ show-values-spark:
 get-values-spark:
 	helm get values spark -n spark > actual_values_spark.yaml
 
+repos-add:
+	helm repo add elastic https://Helm.elastic.co
+	helm repo add apache-airflow https://airflow.apache.org
+
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm install my-release bitnami/spark
