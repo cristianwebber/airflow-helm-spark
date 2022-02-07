@@ -52,8 +52,16 @@ deploy-elasticsearch:
 	kubectl create namespace elasticsearch
 	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elasticsearch --debug
 
+deploy-kibana:
+	kubectl create namespace kibana
+	helm install kibana elastic/kibana -f kibana/values.yaml -n kibana --debug
+
+run-kibana:
+	kubectl port-forward deployment/kibana-kibana 5601 -n kibana
+
 repos-add:
 	helm repo add elastic https://Helm.elastic.co
+	Helm install --name kibana elastic/kibana 
 	helm repo add apache-airflow https://airflow.apache.org
 
 	helm repo add bitnami https://charts.bitnami.com/bitnami
