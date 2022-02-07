@@ -21,7 +21,7 @@ argo-secret:
 
 deploy-airflow:
 	kubectl create namespace airflow
-	helm install airflow apache-airflow/airflow --values airflow/values.yaml --namespace airflow --debug
+	helm install airflow apache-airflow/airflow --values airflow/values.yaml --namespace airflow
 
 show-values-airflow:
 	helm show values apache-airflow/airflow > show_values_airflow.yaml
@@ -33,7 +33,7 @@ run-airflow:
 	kubectl port-forward svc/airflow-webserver 8000:8080 -n airflow
 
 upgrade-airflow:
-	helm upgrade --install airflow apache-airflow/airflow -n airflow -f airflow/values.yaml --debug
+	helm upgrade --install airflow apache-airflow/airflow -n airflow -f airflow/values.yaml
 
 secret-github:
 	kubectl create secret generic airflow-ssh-git-secret --from-file=gitSshKey=/home/crist/.ssh/airflow -n airflow
@@ -50,11 +50,14 @@ get-values-spark:
 
 deploy-elasticsearch:
 	kubectl create namespace elasticsearch
-	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elasticsearch --debug
+	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elasticsearch
+
+run-elasticsearch:
+	kubectl port-forward svc/elasticsearch-master 9200 -n elasticsearch
 
 deploy-kibana:
 	kubectl create namespace kibana
-	helm install kibana elastic/kibana -f kibana/values.yaml -n kibana --debug
+	helm install kibana elastic/kibana -f kibana/values.yaml -n kibana
 
 run-kibana:
 	kubectl port-forward deployment/kibana-kibana 5601 -n kibana
