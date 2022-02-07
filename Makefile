@@ -1,5 +1,14 @@
 
+full-install: minikube-start deploy-airflow secret-github
+	echo "Wait 30 seconds and then run "make run-airflow"
 
+minikube-start:
+	minikube start
+
+minikube-stop:
+	minikube stop
+
+# track changes in cluster and github
 argo-deploy:
 	kubectl create namespace argocd
 	kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
@@ -12,7 +21,7 @@ argo-secret:
 
 deploy-airflow:
 	kubectl create namespace airflow
-	helm install airflow apache-airflow/airflow --namespace airflow
+	helm install airflow apache-airflow/airflow --values values.yaml --namespace airflow --debug
 
 show-values-airflow:
 	helm show values apache-airflow/airflow > show_values_airflow.yaml
