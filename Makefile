@@ -1,6 +1,6 @@
 
 full-install: minikube-start deploy-airflow secret-github
-	echo "Wait 30 seconds and then run "make run-airflow"
+	echo "Wait 30 seconds and then run make run-airflow"
 
 minikube-start:
 	minikube start
@@ -47,6 +47,10 @@ show-values-spark:
 
 get-values-spark:
 	helm get values spark -n spark > actual_values_spark.yaml
+
+deploy-elasticsearch:
+	kubectl create namespace elasticsearch
+	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elasticsearch --debug
 
 repos-add:
 	helm repo add elastic https://Helm.elastic.co
