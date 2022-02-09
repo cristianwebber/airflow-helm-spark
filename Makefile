@@ -3,7 +3,7 @@ full-install: minikube-start deploy-airflow secret-github
 	echo "Wait 30 seconds and then run make run-airflow"
 
 minikube-start:
-	minikube start
+	minikube start --kubernetes-version=v1.21.1
 
 minikube-stop:
 	minikube stop
@@ -48,9 +48,11 @@ show-values-spark:
 get-values-spark:
 	helm get values spark -n spark > actual_values_spark.yaml
 
-deploy-elasticsearch:
-	kubectl create namespace elasticsearch
-	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elasticsearch
+deploy-elk:
+	kubectl create namespace elk-stack
+	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elk-stack
+	helm install kibana elastic/kibana -f kibana/values.yaml -n elk-stack
+	helm install metricbeat elastic/metricbeat -f metricbeat/values.yaml -n elk-stack
 
 run-elasticsearch:
 	kubectl port-forward svc/elasticsearch-master 9200 -n elasticsearch
@@ -62,10 +64,13 @@ deploy-kibana:
 run-kibana:
 	kubectl port-forward deployment/kibana-kibana 5601 -n kibana
 
+deploy-metricbeat:
+	kubectl create namespace metricbeat
+	helm install metricbeat elastic/metricbeat -f metricbeat/values.yaml -n metricbeat
+
 repos-add:
 	helm repo add elastic https://Helm.elastic.co
-	Helm install --name kibana elastic/kibana 
 	helm repo add apache-airflow https://airflow.apache.org
-
 	helm repo add bitnami https://charts.bitnami.com/bitnami
+	
 	helm install my-release bitnami/spark
