@@ -48,29 +48,19 @@ show-values-spark:
 get-values-spark:
 	helm get values spark -n spark > actual_values_spark.yaml
 
-deploy-elk:
-	kubectl create namespace elk-stack
-	helm install elasticsearch elastic/elasticsearch -f elasticsearch/values.yaml -n elk-stack
-	helm install kibana elastic/kibana -f kibana/values.yaml -n elk-stack
-	helm install metricbeat elastic/metricbeat -f metricbeat/values.yaml -n elk-stack
+deploy-logging-helm:
+	kubectl create namespace logging
+	helm install elasticsearch elastic/elasticsearch -f logging/elasticsearch.yaml -n logging
+	helm install kibana elastic/kibana -f logging/kibana.yaml -n logging
+	helm install metricbeat elastic/metricbeat -f logging/metricbeat.yaml -n logging
 
 run-elasticsearch:
-	kubectl port-forward svc/elasticsearch-master 9200 -n elasticsearch
-
-deploy-kibana:
-	kubectl create namespace kibana
-	helm install kibana elastic/kibana -f kibana/values.yaml -n kibana
+	kubectl port-forward svc/elasticsearch-master 9200 -n logging
 
 run-kibana:
-	kubectl port-forward deployment/kibana-kibana 5601 -n kibana
-
-deploy-metricbeat:
-	kubectl create namespace metricbeat
-	helm install metricbeat elastic/metricbeat -f metricbeat/values.yaml -n metricbeat
+	kubectl port-forward deployment/kibana-kibana 5601 -n logging
 
 repos-add:
 	helm repo add elastic https://Helm.elastic.co
 	helm repo add apache-airflow https://airflow.apache.org
 	helm repo add bitnami https://charts.bitnami.com/bitnami
-	
-	helm install my-release bitnami/spark
