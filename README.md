@@ -10,6 +10,7 @@ https://logz.io/blog/deploying-the-elk-stack-on-kubernetes-with-helm/
 - Using MinIO as bucket?
 - Improve Makefile
 - Improve values.yaml
+- Find clear deployments with yaml files for k8s
 
 
 What more?

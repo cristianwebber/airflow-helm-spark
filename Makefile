@@ -54,13 +54,18 @@ deploy-logging-helm:
 	helm install kibana elastic/kibana -f logging/kibana.yaml -n logging
 	helm install metricbeat elastic/metricbeat -f logging/metricbeat.yaml -n logging
 
+upgrade-logging-helm:
+	helm upgrade --install elasticsearch elastic/elasticsearch -f logging/elasticsearch.yaml -n logging
+	helm upgrade --install kibana elastic/kibana -f logging/kibana.yaml -n logging
+	helm upgrade --install metricbeat elastic/metricbeat -f logging/metricbeat.yaml -n logging
+
 run-elasticsearch:
 	kubectl port-forward svc/elasticsearch-master 9200 -n logging
 
 run-kibana:
 	kubectl port-forward deployment/kibana-kibana 5601 -n logging
 
-repos-add:
+add-repos:
 	helm repo add elastic https://Helm.elastic.co
 	helm repo add apache-airflow https://airflow.apache.org
 	helm repo add bitnami https://charts.bitnami.com/bitnami
