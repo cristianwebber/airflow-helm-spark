@@ -53,11 +53,13 @@ deploy-logging-helm:
 	helm install elasticsearch elastic/elasticsearch -f logging/elasticsearch.yaml -n logging
 	helm install kibana elastic/kibana -f logging/kibana.yaml -n logging
 	helm install metricbeat elastic/metricbeat -f logging/metricbeat.yaml -n logging
+	helm install filebeat elastic/filebeat -f logging/filebeat.yaml -n logging
 
 upgrade-logging-helm:
 	helm upgrade --install elasticsearch elastic/elasticsearch -f logging/elasticsearch.yaml -n logging
 	helm upgrade --install kibana elastic/kibana -f logging/kibana.yaml -n logging
 	helm upgrade --install metricbeat elastic/metricbeat -f logging/metricbeat.yaml -n logging
+	helm upgrade --install filebeat elastic/filebeat -f logging/filebeat.yaml -n logging
 
 run-elasticsearch:
 	kubectl port-forward svc/elasticsearch-master 9200 -n logging

@@ -11,6 +11,7 @@ https://logz.io/blog/deploying-the-elk-stack-on-kubernetes-with-helm/
 - Improve Makefile
 - Improve values.yaml
 - Find clear deployments with yaml files for k8s
+- Logstash?
 
 
 What more?
